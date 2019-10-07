@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".ui.main.MainActivity">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@drawable/side_primary"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:id="@+id/appp"
+            android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="75dp"
+            android:contentDescription="@string/image"
+            android:layout_gravity="start"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/logo_hangin_white"
+            android:scaleType="fitXY"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/sign_out"
+                android:onClick="sign_out"
+                android:textColor="#FFEB3B"
+                android:layout_marginEnd="20dp"
+                android:background="@color/cardview_shadow_end_color"
+                android:elevation="20dp"
+                android:textSize="29dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/appp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>
+
+

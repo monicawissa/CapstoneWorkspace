@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:alpha="1"
+    android:background="@drawable/side_primary"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
+
+    <TextView
+        android:id="@+id/place_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="Abc Shop"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold|italic" />
+    <TextView
+        android:id="@+id/place_adress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:padding="8dp"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:text="Abc Shop"/>
+
+    <TextView
+        android:id="@+id/place_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="Abc Shop"
+        android:textColor="#FAEB7A"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

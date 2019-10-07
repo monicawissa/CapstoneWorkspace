@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "812916888281",
+    "firebase_url": "https://co-working-space2.firebaseio.com",
+    "project_id": "co-working-space2",
+    "storage_bucket": "co-working-space2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812916888281:android:35a9e156e3b245e8f8a4c8",
+        "android_client_info": {
+          "package_name": "com.example.Workspace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812916888281-4b661qocppo3p0fdptrjds9t7br41bjd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.Workspace",
+            "certificate_hash": "337c710eb4da8729d33a8fe8bdbd5bfcbd09162a"
+          }
+        },
+        {
+          "client_id": "812916888281-fndrhvi6dldrl6a31ac0jilq31aarn75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmLuxyRxUIZY2etUL55GMm1UNfdm4I0Rw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "812916888281-fndrhvi6dldrl6a31ac0jilq31aarn75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
