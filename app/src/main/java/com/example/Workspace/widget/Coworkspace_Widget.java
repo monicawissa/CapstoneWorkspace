@@ -29,7 +29,9 @@ public class Coworkspace_Widget extends AppWidgetProvider {
                     id);
             serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
             remoteViews.setRemoteAdapter(R.id.list_view, serviceIntent);
+
             Intent intent = new Intent(context, MainActivity.class);
+
             PendingIntent pendingIntent = PendingIntent.getBroadcast(
                     context,
                     0,

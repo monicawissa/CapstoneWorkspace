@@ -92,6 +92,8 @@ public class detailActivity extends AppCompatActivity {
 
     Workspace currentPlaceDetail;
     Bundle currentPlaceUserRatingDetail;
+    Bundle placeAboutFragmentBundle;
+
     private String mCurrentPlaceDetailUrl;
     private ArrayList<PlaceUserRating> mPlaceUserRatingsArrayList = new ArrayList<>();
 
@@ -195,6 +197,9 @@ public class detailActivity extends AppCompatActivity {
                                     mPlaceUserRatingsArrayList.add(currentPlaceUserRating);
                                 }
                             }
+                            placeAboutFragmentBundle= new Bundle();
+                            placeAboutFragmentBundle.putParcelable(
+                                    GoogleApiUrl.CURRENT_LOCATION_DATA_KEY, currentPlaceDetail);
 
                             currentPlaceUserRatingDetail = new Bundle();
                             currentPlaceUserRatingDetail.putParcelableArrayList(
@@ -235,6 +240,8 @@ public class detailActivity extends AppCompatActivity {
 
                         case R.id.nav_location:
                             selsectedfrag = new LocationFragment();
+                            selsectedfrag.setArguments(placeAboutFragmentBundle);
+
                             break;
                         default:
                             selsectedfrag = new ReviewFragment();
@@ -262,9 +269,35 @@ public class detailActivity extends AppCompatActivity {
         ratingFrom5.setText("(" + currentPlaceDetail.getPlaceRating().doubleValue() + "/5)");
         placeName.setText(currentPlaceDetail.getPlaceName());
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        setfavorite_photo();
+
         Fragment selsectedfrag = new ReviewFragment();
         selsectedfrag.setArguments(currentPlaceUserRatingDetail);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment, selsectedfrag).commit();
+    }
+
+    private void setfavorite_photo() {
+        DatabaseReference myRef = FirebaseDatabase.getInstance()
+                .getReference().child("favorites")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(id);
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()==null){
+                    place_favorite.setImageDrawable(getResources().getDrawable(R.drawable.not_favorite));
+                }
+                else{
+                    place_favorite.setImageDrawable(getResources().getDrawable(R.drawable.favorite));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -367,6 +400,8 @@ public class detailActivity extends AppCompatActivity {
                 else{
                     dataSnapshot.getRef().removeValue();
                     place_favorite.setImageDrawable(getResources().getDrawable(R.drawable.not_favorite));
+                    Toast.makeText(detailActivity.this, "removed from Favorite", Toast.LENGTH_LONG).show();
+
                 }
             }
 
@@ -375,82 +410,5 @@ public class detailActivity extends AppCompatActivity {
 
             }
         });
-        //addTojson();
-    }
-
-    private boolean existFavorite() {
-        final Boolean[] exist = {false};
-        DatabaseReference myRef = FirebaseDatabase.getInstance()
-                .getReference("favorites")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child(currentPlaceDetail.getPlaceId());
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                exist[0] =true;
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("taggg", "Failed to read value.", databaseError.toException());
-
-            }
-        });
-        return exist[0];
-    }
-
-    private void addTojson() {Gson gson=new Gson();
-
-        json=gson.toJson(getFavouritePlaceListData());
-        //save json
-
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putString("json", json);
-
-        editor.apply();
-        Log.d("taggg",json);
-
-        //update on the widget direct
-        Intent intent = new Intent(getApplicationContext(), Coworkspace_Widget.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        int[] ids = AppWidgetManager.getInstance(getApplication())
-        .getAppWidgetIds(new ComponentName(getApplication(), Coworkspace_Widget.class));
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        getApplicationContext().sendBroadcast(intent);
-
-        Toast.makeText(getApplicationContext(), "coworkings saved as a widget", Toast.LENGTH_SHORT).show();
-
-    }
-
-    private ArrayList<Workspace> getFavouritePlaceListData() {
-        ArrayList<Workspace>mFavouriteWorkspaceArrayList=new ArrayList<>();
-        DatabaseReference myRef = FirebaseDatabase.getInstance()
-                .getReference("favorites")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                mFavouriteWorkspaceArrayList.clear();
-                for ( DataSnapshot  snapshot:dataSnapshot.getChildren()) {
-                    Workspace w=snapshot.getValue(Workspace.class);
-                    Log.d("taggg","name = "+w.getPlaceName());
-                    if(w!=null){
-                        mFavouriteWorkspaceArrayList.add(w);}
-                }
-                if(mFavouriteWorkspaceArrayList!=null)
-                    Collections.reverse(mFavouriteWorkspaceArrayList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("taggg", "Failed to read fovorites.", databaseError.toException());
-
-            }
-        });
-        return mFavouriteWorkspaceArrayList;
     }
 }

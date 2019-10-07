@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 
@@ -33,7 +34,7 @@ public class coworkerWidgetAdapter implements RemoteViewsService.RemoteViewsFact
     private Context mContext;
     private int appWidgetId;
 
-    private ArrayList<Workspace> mFavouriteWorkspaceArrayList = new ArrayList<>();
+    private List<Workspace> mFavouriteWorkspaceArray ;
 
     //Constructor
     public coworkerWidgetAdapter(Context context, Intent intent)
@@ -45,24 +46,23 @@ public class coworkerWidgetAdapter implements RemoteViewsService.RemoteViewsFact
 
     @Override
     public void onCreate() {
-        //mFavouriteWorkspaceArrayList = getFavouritePlaceListData();
+        getFavouritePlaceListData_firebase();
     }
 
     @Override
     public void onDataSetChanged() {
-        //mFavouriteWorkspaceArrayList = getFavouritePlaceListData();
-
+         //getFavouritePlaceListData_firebase();
     }
 
     @Override
     public void onDestroy() {
-        mFavouriteWorkspaceArrayList.clear();
+        mFavouriteWorkspaceArray.clear();
 
     }
 
     @Override
     public int getCount() {
-        return mFavouriteWorkspaceArrayList.size();
+        return mFavouriteWorkspaceArray.size();
     }
 
     @Override
@@ -70,10 +70,10 @@ public class coworkerWidgetAdapter implements RemoteViewsService.RemoteViewsFact
 
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(),
                 R.layout.list_item_widget);
-        remoteViews.setTextViewText(R.id.place_name, mFavouriteWorkspaceArrayList.get(position).getPlaceName());
-        remoteViews.setTextViewText(R.id.place_adress, mFavouriteWorkspaceArrayList.get(position)
+        remoteViews.setTextViewText(R.id.place_name, mFavouriteWorkspaceArray.get(position).getPlaceName());
+        remoteViews.setTextViewText(R.id.place_adress, mFavouriteWorkspaceArray.get(position)
                 .getPlaceAddress());
-        remoteViews.setTextViewText(R.id.place_phone, mFavouriteWorkspaceArrayList.get(position)
+        remoteViews.setTextViewText(R.id.place_phone, mFavouriteWorkspaceArray.get(position)
                 .getPlacePhoneNumber());
 
         return remoteViews;
@@ -99,13 +99,32 @@ public class coworkerWidgetAdapter implements RemoteViewsService.RemoteViewsFact
         return false;
     }
 
-    private ArrayList<Workspace> getFavouritePlaceListData() {
-        Gson gson=new Gson();
-        //get workspaces from json
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
-        String json = sharedPreferences.getString("json", "");;
-        Workspace[] rec =gson.fromJson(json,Workspace[].class);
-        Collections.addAll(mFavouriteWorkspaceArrayList, rec);
-        return mFavouriteWorkspaceArrayList;
+
+    private void getFavouritePlaceListData_firebase() {
+        mFavouriteWorkspaceArray=new ArrayList<>();
+        DatabaseReference myRef = FirebaseDatabase.getInstance()
+                .getReference("favorites")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                mFavouriteWorkspaceArray.clear();
+                for ( DataSnapshot  snapshot:dataSnapshot.getChildren()) {
+                    Workspace w=snapshot.getValue(Workspace.class);
+                    Log.d("taggg","name widget = "+w.getPlaceName());
+                    mFavouriteWorkspaceArray.add(w);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("taggg", "Failed to read fovorites.", databaseError.toException());
+
+            }
+        });
+
     }
 }

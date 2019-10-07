@@ -46,6 +46,9 @@ public class Workspace implements Parcelable {
     private String mPlaceWebsite;
     private String mPlaceShareLink;
     String height;
+    public Workspace(){
+        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
+    }
 
     public String getPhoto_reference() {//https://maps.googleapis.com/maps/api/place/photo?maxheight=720
         return "https://maps.googleapis.com/maps/api/place/photo?maxheight="+height+"&photoreference="+photo_reference+
