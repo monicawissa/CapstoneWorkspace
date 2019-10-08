@@ -1,6 +1,8 @@
 package com.example.Workspace.widget;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -22,42 +24,64 @@ import androidx.annotation.NonNull;
 public class coworkerWidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
 
     private Context mContext;
+    private int appWidgetId;
     private ArrayList<Workspace> mFavouritePlaceArrayList = new ArrayList<>();
 
     //Constructor
-    public coworkerWidgetAdapter(Context context)
-    {
-        mContext = context;
+    public coworkerWidgetAdapter(Context context, Intent intent) {
+        this.mContext = context;
+        appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID);
     }
+
 
     @Override
     public void onCreate() {
-        getFavouritePlaceListData();
+       //getFavouritePlaceListData();
+
     }
 
     @Override
     public void onDataSetChanged() {
+        //getFavouritePlaceListData();
+        DatabaseReference myRef = FirebaseDatabase.getInstance()
+                .getReference("favorites")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for ( DataSnapshot  snapshot:dataSnapshot.getChildren()) {
+                    Workspace w=snapshot.getValue(Workspace.class);
+                    Log.d("taggg","name widgettt = "+w.getPlaceName());
+                    mFavouritePlaceArrayList.add(w);
+                }
+                Log.d("taggg","size Favouritea:" +String.valueOf(mFavouritePlaceArrayList.size()));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("taggg", "Failed to read fovorites.", databaseError.toException());
+
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
-
+        mFavouritePlaceArrayList.clear();
     }
 
     @Override
     public int getCount() {
+        Log.d("taggg","size  getCount:" +String.valueOf(mFavouritePlaceArrayList.size()));
         return mFavouritePlaceArrayList.size();
+
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
-        if(mFavouritePlaceArrayList.size()==0){
-            try {
-                wait(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(),
                 R.layout.list_item_widget);
         remoteViews.setTextViewText(R.id.place_name, mFavouritePlaceArrayList.get(position).getPlaceName());
@@ -86,30 +110,6 @@ public class coworkerWidgetAdapter implements RemoteViewsService.RemoteViewsFact
 
     @Override
     public boolean hasStableIds() {
-        return true;
-    }
-
-    private void getFavouritePlaceListData() {
-        mFavouritePlaceArrayList.clear();
-        DatabaseReference myRef = FirebaseDatabase.getInstance()
-                .getReference("favorites")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for ( DataSnapshot  snapshot:dataSnapshot.getChildren()) {
-                    Workspace w=snapshot.getValue(Workspace.class);
-                    Log.d("taggg","name widgettt = "+w.getPlaceName());
-                    mFavouritePlaceArrayList.add(w);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("taggg", "Failed to read fovorites.", databaseError.toException());
-
-            }
-        });
+        return false;
     }
 }

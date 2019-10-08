@@ -1,9 +1,5 @@
 package com.example.Workspace.utilities;
 
-/**
- * Created by iamcs on 2017-04-29.
- */
-
 public class GoogleApiUrl {
 
     /**

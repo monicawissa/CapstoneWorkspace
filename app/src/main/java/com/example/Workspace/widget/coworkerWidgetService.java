@@ -8,6 +8,7 @@ import android.widget.RemoteViewsService;
 public class coworkerWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new coworkerWidgetAdapter(this);
+        return new coworkerWidgetAdapter(this.
+                getApplicationContext(), intent);
     }
 }
