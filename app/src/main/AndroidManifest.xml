@@ -43,7 +43,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAQRniidcoWLf7Olv2mbgfL71OSQIKeY0M" />
 
-        <receiver android:name=".widget.Coworkspace_Widget">
+        <receiver android:name=".widget.coworkerWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

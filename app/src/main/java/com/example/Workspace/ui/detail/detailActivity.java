@@ -32,7 +32,6 @@ import com.example.Workspace.network.PlaceUserRating;
 import com.example.Workspace.network.Workspace;
 import com.example.Workspace.ui.auth.Registration;
 import com.example.Workspace.utilities.GoogleApiUrl;
-import com.example.Workspace.widget.Coworkspace_Widget;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -210,7 +209,7 @@ public class detailActivity extends AppCompatActivity {
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            getCurrentPlaceAllDetails(currentPlaceDetailUrl);
+                            //getCurrentPlaceAllDetails(currentPlaceDetailUrl);
                         }
                     }
                 },
