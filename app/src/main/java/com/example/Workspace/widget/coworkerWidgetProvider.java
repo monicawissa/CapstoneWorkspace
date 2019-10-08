@@ -10,10 +10,6 @@ import android.widget.RemoteViews;
 import com.example.Workspace.R;
 
 
-/**
- * Created by iamcs on 2017-05-04.
- */
-
 public class coworkerWidgetProvider extends AppWidgetProvider {
 
     @Override
