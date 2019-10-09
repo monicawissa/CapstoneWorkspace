@@ -62,4 +62,7 @@
     <string name="required">Required.</string>
     <string name="required_10_digit">Required 10 digit.</string>
     <string name="confirm_error">confirm password incorrect.</string>
+    <string name="not_reg">Not Registered</string>
+    <string name="add_fav">Add to Favorite</string>
+    <string name="remove_fav">removed from Favorite</string>
 </resources>

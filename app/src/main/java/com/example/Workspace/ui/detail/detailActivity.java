@@ -258,7 +258,6 @@ public class detailActivity extends AppCompatActivity {
 
 
     private void setUI(Workspace currentPlaceDetail) {
-        Log.d("taggg", "hi this is the photo reference =" + currentPlaceDetail.getPhoto_reference());
         Picasso.with(getApplicationContext())
                 .load(R.drawable.coworkspace_logo)
                 .into(placeProfile);
@@ -303,7 +302,7 @@ public class detailActivity extends AppCompatActivity {
     private void makeCallToPlace() {
         Log.d("taggg", currentPlaceDetail.getPlacePhoneNumber());
         if (currentPlaceDetail.getPlacePhoneNumber() == null || currentPlaceDetail.getPlacePhoneNumber().isEmpty())
-            Toast.makeText(getApplicationContext(), "Not Registered",
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.not_reg),
                     Toast.LENGTH_SHORT).show();
         else {
             try
@@ -371,7 +370,6 @@ public class detailActivity extends AppCompatActivity {
             return;
         }
 
-        Log.d( "taggg","hi this is id ="+id);
 
         DatabaseReference myRef = FirebaseDatabase.getInstance()
                 .getReference().child("favorites")
@@ -388,10 +386,10 @@ public class detailActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 place_favorite.setImageDrawable(getResources().getDrawable(R.drawable.favorite));
-                                Toast.makeText(detailActivity.this, "Add to Favorite", Toast.LENGTH_LONG).show();
+                                Toast.makeText(detailActivity.this, getResources().getString(R.string.add_fav), Toast.LENGTH_LONG).show();
                             } else {
 
-                                Toast.makeText(detailActivity.this, "can't add workspace to favorite list." + task.getException(),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(detailActivity.this, "can't add workspace to favorite list." ,Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -399,7 +397,7 @@ public class detailActivity extends AppCompatActivity {
                 else{
                     dataSnapshot.getRef().removeValue();
                     place_favorite.setImageDrawable(getResources().getDrawable(R.drawable.not_favorite));
-                    Toast.makeText(detailActivity.this, "removed from Favorite", Toast.LENGTH_LONG).show();
+                    Toast.makeText(detailActivity.this,  getResources().getString(R.string.remove_fav), Toast.LENGTH_LONG).show();
 
                 }
             }

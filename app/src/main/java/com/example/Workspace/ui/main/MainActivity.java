@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (!aBoolean) //not connected
-                Snackbar.make(recyclerView ,"No internet connection",
+                Snackbar.make(recyclerView ,getResources().getString(R.string.no_internet_connection),
                         Snackbar.LENGTH_SHORT).show();
         }
     }

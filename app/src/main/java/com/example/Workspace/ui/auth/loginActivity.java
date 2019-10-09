@@ -113,14 +113,14 @@ public class loginActivity extends AppCompatActivity {
         String passwordd = password.getEditText().getText().toString().trim();
 
         if (TextUtils.isEmpty(emaill)) {
-            email.setError("Required.");
+            email.setError(getResources().getString(R.string.required));
             valid = false;
         } else {
             email.setError(null);
         }
 
         if (TextUtils.isEmpty(passwordd)) {
-            password.setError("Required.");
+            password.setError(getResources().getString(R.string.required));
             valid = false;
         } else {
             password.setError(null);
