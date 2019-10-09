@@ -78,7 +78,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
     private void showImage(final String uRL,ImageView image) {
-        new Thread(new Runnable() {
+            new Thread(new Runnable() {
 
             @Override
             public void run() {

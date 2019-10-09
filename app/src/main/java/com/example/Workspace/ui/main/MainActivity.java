@@ -3,14 +3,13 @@ package com.example.Workspace.ui.main;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import retrofit2.Call;
-import retrofit2.Callback;
 //import retrofit2.Response;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,12 +23,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.Workspace.R;
 import com.example.Workspace.adapter.RecyclerViewAdapter;
-import com.example.Workspace.network.Account;
 import com.example.Workspace.network.Workspace;
-import com.example.Workspace.network.client;
-import com.example.Workspace.network.workspaceEndPoint;
 import com.example.Workspace.ui.auth.loginActivity;
-import com.example.Workspace.utilities.AppController;
 import com.example.Workspace.utilities.GoogleApiUrl;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,51 +57,39 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
-        if (isNetworkAvailable()) {
 
-        } else
-            Snackbar.make(recyclerView ,"No internet connection",
-                    Snackbar.LENGTH_SHORT).show();
-        //token=getIntent().getStringExtra("x-auth-token");
-        //  say_hello();
+        new networkConnection().execute();
+
         mQueue = Volley.newRequestQueue(this);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
         getPlaces();
 
     }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    private class networkConnection extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext()
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (!aBoolean) //not connected
+                Snackbar.make(recyclerView ,"No internet connection",
+                        Snackbar.LENGTH_SHORT).show();
+        }
     }
-    /*private void say_hello() {
-        workspaceEndPoint service =new client().getRetrofit().create(workspaceEndPoint.class);
-        Call<Account> call=service.getAccount("application/json",token);
-        call.enqueue(new Callback<Account>() {
-            @Override
-            public void onResponse(@NotNull Call<Account> call, @NotNull Response<Account> response) {
-                if(response.code()==200){
-                    assert response.body() != null;
-                    Toast.makeText(getApplicationContext(),"Hello "+ response.body().getFirstName()+" ;)",Toast.LENGTH_LONG).show();
 
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),response.message(),Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<Account> call, @NotNull Throwable t) {
-                Toast.makeText(getApplicationContext(),"something went wrong",Toast.LENGTH_LONG).show();
-            }
-
-        });
-    }*/
     private void getPlaces() {
         String currentLocation = getSharedPreferences(
                 GoogleApiUrl.CURRENT_LOCATION_SHARED_PREFERENCE_KEY, 0)

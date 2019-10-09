@@ -55,4 +55,11 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="sign_out">Sign out</string>
+    <string name="error_invalid_email">Invalid email</string>
+    <string name="error_user_exists">User exist</string>
+    <string name="Registration_success">Registration success</string>
+    <string name="failed">Failed on saving data.</string>
+    <string name="required">Required.</string>
+    <string name="required_10_digit">Required 10 digit.</string>
+    <string name="confirm_error">confirm password incorrect.</string>
 </resources>
