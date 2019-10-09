@@ -14,7 +14,7 @@
         android:gravity="center_horizontal"
         android:maxLines="1"
         android:padding="8dp"
-        android:text="Abc Shop"
+        android:text="@string/abc_shop"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold|italic" />
@@ -26,7 +26,7 @@
         android:padding="8dp"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        android:text="Abc Shop"/>
+        android:text="@string/abc_shop"/>
 
     <TextView
         android:id="@+id/place_phone"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:padding="8dp"
-        android:text="Abc Shop"
+        android:text="@string/abc_shop"
         android:textColor="#FAEB7A"
         android:textSize="16sp"
         android:textStyle="bold" />

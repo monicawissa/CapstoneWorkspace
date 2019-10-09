@@ -37,7 +37,7 @@
                 android:layout_marginEnd="20dp"
                 android:background="@color/cardview_shadow_end_color"
                 android:elevation="20dp"
-                android:textSize="29dp"
+                android:textSize="29sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/appp"
                 app:layout_constraintEnd_toEndOf="parent"
